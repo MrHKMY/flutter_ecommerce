@@ -1,3 +1,4 @@
+import 'package:e_commerce/model/category_model.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class AppRouter {
       case WishlistScreen.routeName:
         return WishlistScreen.route();
       case CatalogScreen.routeName:
-        return CatalogScreen.route();
+        return CatalogScreen.route(category: settings.arguments as Category);
 
       default:
         return _errorRoute();
@@ -29,7 +30,7 @@ class AppRouter {
     return MaterialPageRoute(
         settings: RouteSettings(name: '/error'),
         builder: (_) => Scaffold(
-                appBar: AppBar(
+            appBar: AppBar(
               title: Text("Error"),
             )));
   }
