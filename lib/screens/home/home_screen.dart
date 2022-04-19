@@ -4,7 +4,7 @@ import 'package:e_commerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
-  static const String routeName = '/';
+  static const String routeName = 'home';
 
   static Route route() {
     return MaterialPageRoute(
