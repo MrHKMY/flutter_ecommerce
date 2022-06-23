@@ -7,31 +7,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
-  static const String routeName = 'home';
+  static const String routeName = '/';
 
   static Route route() {
     return MaterialPageRoute(
-        settings: RouteSettings(name: routeName), builder: (_) => HomeScreen());
+      settings: RouteSettings(name: routeName),
+      builder: (_) => HomeScreen(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(title: "Home Page"),
-      bottomNavigationBar: CustomNavBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(child: BlocBuilder<CategoryBloc, CategoryState>(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: CustomAppBar(
+          title: 'Home Screen',
+          //automaticallyImplyLeading: false,
+        ),
+        bottomNavigationBar: CustomNavBar(screen: routeName),
+        body: Column(
+          children: [
+            BlocBuilder<CategoryBloc, CategoryState>(
               builder: (context, state) {
                 if (state is CategoryLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state is CategoryLoaded) {
+                }
+                if (state is CategoryLoaded) {
                   return CarouselSlider(
                     options: CarouselOptions(
-                      aspectRatio: 1.5,
+                      aspectRatio: 1.6,
                       viewportFraction: 0.9,
                       enlargeCenterPage: true,
                       enlargeStrategy: CenterPageEnlargeStrategy.height,
@@ -41,49 +48,50 @@ class HomeScreen extends StatelessWidget {
                         .toList(),
                   );
                 } else {
-                  return Text("Something went wrong");
+                  return Text('Something went wrong.');
                 }
               },
-            )),
-          ),
-          SectionTitle(title: "RECOMMENDED"),
-          //ProductCard(product: Product.products[0],),
-          BlocBuilder<ProductBloc, ProductState>(
-            builder: (context, state) {
-              if (state is ProductLoading) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is ProductLoaded) {
-                return ProductCarousel(
+            ),
+            SectionTitle(title: 'RECOMMENDED'),
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  return ProductCarousel(
                     products: state.products
                         .where((product) => product.isRecommended)
-                        .toList());
-              } else {
-                return Text("Something went wrong");
-              }
-            },
-          ),
-
-          SectionTitle(title: "MOST POPULAR"),
-          //ProductCard(product: Product.products[0],),
-          BlocBuilder<ProductBloc, ProductState>(
-            builder: (context, state) {
-              if (state is ProductLoading) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is ProductLoaded) {
-                return ProductCarousel(
+                        .toList(),
+                  );
+                } else {
+                  return Text('Something went wrong.');
+                }
+              },
+            ),
+            SectionTitle(title: 'MOST POPULAR'),
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  return ProductCarousel(
                     products: state.products
                         .where((product) => product.isPopular)
-                        .toList());
-              } else {
-                return Text("Something went wrong");
-              }
-            },
-          ),
-        ],
+                        .toList(),
+                  );
+                } else {
+                  return Text('Something went wrong.');
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
