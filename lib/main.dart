@@ -4,6 +4,7 @@ import 'package:e_commerce/config/theme.dart';
 import 'package:e_commerce/repositories/category/category_repository.dart';
 import 'package:e_commerce/repositories/checkout/checkout_repository.dart';
 import 'package:e_commerce/repositories/product/product_repository.dart';
+import 'package:e_commerce/screens/order_confirmation/order_confirmation_screen.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:e_commerce/simple_bloc_observer.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme(),
         onGenerateRoute: AppRouter.onGenerateRoute,
-        initialRoute: SplashScreen.routeName,
+        initialRoute: OrderConfirmation.routeName,
       ),
     );
   }

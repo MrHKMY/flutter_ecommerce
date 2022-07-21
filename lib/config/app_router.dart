@@ -1,5 +1,6 @@
 import 'package:e_commerce/model/category_model.dart';
 import 'package:e_commerce/model/models.dart';
+import 'package:e_commerce/screens/order_confirmation/order_confirmation_screen.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,8 @@ class AppRouter {
         return CatalogScreen.route(category: settings.arguments as Category);
       case CheckoutScreen.routeName:
         return CheckoutScreen.route();
+      case OrderConfirmation.routeName:
+        return OrderConfirmation.route();
 
       default:
         return _errorRoute();
