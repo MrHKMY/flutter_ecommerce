@@ -42,9 +42,7 @@ class ProductScreen extends StatelessWidget {
                 builder: (context, state) {
                   return IconButton(
                       onPressed: () {
-                        context
-                            .read<WishlistBloc>()
-                            .add(WishlistProductAdded(product));
+                        context.read<WishlistBloc>().add(AddWishlist(product));
 
                         final snackBar =
                             SnackBar(content: Text("Added to Wishlist"));
@@ -60,7 +58,7 @@ class ProductScreen extends StatelessWidget {
                 builder: (context, state) {
                   return ElevatedButton(
                       onPressed: () {
-                        context.read<CartBloc>().add(CartProductAdded(product));
+                        context.read<CartBloc>().add(AddProduct(product));
                         //TODO not necessary navigator
                         Navigator.pushNamed(context, '/cart');
                       },

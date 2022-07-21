@@ -1,7 +1,8 @@
-import 'package:e_commerce/model/category_model.dart';
+import 'package:e_commerce/blocs/blocs.dart';
 import 'package:e_commerce/model/models.dart';
 import 'package:e_commerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CatalogScreen extends StatelessWidget {
   static const String routeName = '/catalog';
@@ -24,20 +25,33 @@ class CatalogScreen extends StatelessWidget {
     return Scaffold(
         appBar: CustomAppBar(title: category.name),
         bottomNavigationBar: CustomNavBar(screen: routeName),
-        body: GridView.builder(
-            padding: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 16.0,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 1.15),
-            itemCount: categoryProduct.length,
-            itemBuilder: (BuildContext context, int index) {
+        body: BlocBuilder<ProductBloc, ProductState>(
+          builder: (context, state) {
+            if (state is ProductLoading) {
               return Center(
-                  child: ProductCard(
-                product: categoryProduct[index],
-                widthFactor: 2.2,
-              ));
-            }));
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is ProductLoaded) {
+              return GridView.builder(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 16.0,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, childAspectRatio: 1.15),
+                  itemCount: state.products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Center(
+                        child: ProductCard(
+                      product: state.products[index],
+                      widthFactor: 2.2,
+                    ));
+                  });
+            } else {
+              return Text("Something went wrong");
+            }
+          },
+        ));
   }
 }
