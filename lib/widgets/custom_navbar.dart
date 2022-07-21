@@ -89,7 +89,7 @@ class CustomNavBar extends StatelessWidget {
                 final snackBar =
                     SnackBar(content: Text('Added to your Wishlist!'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                context.read<WishlistBloc>().add(WishlistProductAdded(product));
+                context.read<WishlistBloc>().add(AddWishlist(product));
               },
             );
           }
@@ -104,7 +104,7 @@ class CustomNavBar extends StatelessWidget {
           if (state is CartLoaded) {
             return ElevatedButton(
               onPressed: () {
-                context.read<CartBloc>().add(CartProductAdded(product));
+                context.read<CartBloc>().add(AddProduct(product));
                 Navigator.pushNamed(context, '/cart');
               },
               style: ElevatedButton.styleFrom(

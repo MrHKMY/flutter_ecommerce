@@ -17,4 +17,15 @@ class ProductRepository extends BaseProductRepository {
       return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();
     });
   }
+
+  @override
+  Stream<List<Product>> getAllWater() {
+    return _firebaseFirestore
+        .collection("products")
+        .where('category', isEqualTo: "Water")
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();
+    });
+  }
 }

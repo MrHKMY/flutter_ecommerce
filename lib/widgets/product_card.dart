@@ -1,4 +1,4 @@
-import 'package:e_commerce/blocs/cart/cart_bloc.dart';
+import 'package:e_commerce/blocs/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce/model/models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,7 +83,9 @@ class ProductCard extends StatelessWidget {
                       builder: (context, state) {
                         if (state is CartLoading) {
                           return Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
                           );
                         } else if (state is CartLoaded) {
                           return Expanded(
@@ -91,7 +93,7 @@ class ProductCard extends StatelessWidget {
                                   onPressed: () {
                                     context
                                         .read<CartBloc>()
-                                        .add(CartProductAdded(product));
+                                        .add(AddProduct(product));
 
                                     final snackBar = SnackBar(
                                       content: Text('Added to your Cart!'),
@@ -111,7 +113,16 @@ class ProductCard extends StatelessWidget {
                     isWishlist
                         ? Expanded(
                             child: IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  final snackBar = SnackBar(
+                                    content: Text('Removed from wishlist'),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                  context
+                                      .read<WishlistBloc>()
+                                      .add(RemoveWishlist(product));
+                                },
                                 icon: Icon(
                                   Icons.delete,
                                   color: Colors.white,
