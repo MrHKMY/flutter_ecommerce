@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:e_commerce/blocs/cart/cart_bloc.dart';
 import 'package:e_commerce/blocs/checkout/checkout_bloc.dart';
 import 'package:e_commerce/blocs/wishlist/wishlist_bloc.dart';
 import 'package:e_commerce/model/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'google_pay.dart';
 
 class CustomNavBar extends StatelessWidget {
   final String screen;
@@ -153,23 +157,33 @@ class CustomNavBar extends StatelessWidget {
             );
           }
           if (state is CheckoutLoaded) {
-            return ElevatedButton(
-              onPressed: () {
-                context
-                    .read<CheckoutBloc>()
-                    .add(ConfirmCheckout(checkout: state.checkout));
+            if (Platform.isAndroid) {
+              return GooglePay(products: state.products!, total: state.total!);
+            }
+            //   return ElevatedButton(
+            //     onPressed: () {
+            //       context
+            //           .read<CheckoutBloc>()
+            //           .add(ConfirmCheckout(checkout: state.checkout));
 
-                Navigator.pushNamed(context, '/order-confirmation');
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                shape: RoundedRectangleBorder(),
-              ),
-              child: Text(
-                'ORDER NOW',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            );
+            //       Navigator.pushNamed(context, '/order-confirmation');
+            //     },
+            //     style: ElevatedButton.styleFrom(
+            //       primary: Colors.white,
+            //       shape: RoundedRectangleBorder(),
+            //     ),
+            //     child: Text(
+            //       'ORDER NOW',
+            //       style: Theme.of(context).textTheme.headline3,
+            //     ),
+            //   );
+            else {
+              return ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/payment_selection');
+                  },
+                  child: Text("Choose Payment Method"));
+            }
           } else {
             return Text('Something went wrong');
           }
